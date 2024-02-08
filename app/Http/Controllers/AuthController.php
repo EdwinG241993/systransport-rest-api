@@ -148,4 +148,19 @@ class AuthController extends Controller
         //Return user data if user exists 
         return response()->json(['user' => $user]);
     }
+
+    //Remove the specified resource from storage
+    public function destroy($id)
+    {
+        //Search for user
+        $user = User::findOrfail($id);
+
+        //Delete user
+        $user->delete();
+
+        //Response if all is well
+        return response()->json([
+            'mensaje' => 'EL usuario fue eliminado con exito'
+        ], Response::HTTP_OK);
+    }
 }
