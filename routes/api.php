@@ -10,4 +10,5 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     //Todo lo que este dentro de este grupo requiere verificación de usuario.
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('get-user', [AuthController::class, 'getUser']);
+    Route::post('delete-user', [AuthController::class, 'destroy']);
 });
