@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -25,7 +26,7 @@ return new class extends Migration
             $table->unsignedBigInteger('empresa_afiliada_id');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('empresa_afiliada_id')->references('id')->on('empresa_afiliada');
+            $table->foreign('empresa_afiliada_id')->references('id')->on('empresa_afiliada')->onDelete('cascade');
         });
     }
 

@@ -29,7 +29,7 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     //Routes authentication - User Verification
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('get-user', [AuthController::class, 'getUser']);
-    Route::post('delete-user', [AuthController::class, 'destroy']);
+    Route::delete('delete-user/{id}', [AuthController::class, 'destroy']);
 
     //Routes affiliated company - User Verification
     Route::post('empresas-afiliadas', [AffiliatedCompanyController::class, 'store']);
