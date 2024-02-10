@@ -63,6 +63,11 @@ class User extends Authenticatable implements JWTSubject
 
     public function client()
     {
-        return $this->hasOne(Employee::class);
+        return $this->hasOne(Client::class);
+    }
+
+    public function conductor()
+    {
+        return $this->hasOne(Conductor::class);
     }
 }
