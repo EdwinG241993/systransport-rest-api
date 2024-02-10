@@ -34,10 +34,25 @@ class AffiliatedCompany extends Model
         return $this->hasMany('App\Models\Employee', 'empresa_afiliada_id');
     }
 
+    /**
+     * Get the conductors records associated with the affiliated company.
+     */
+    public function conductors()
+    {
+        return $this->hasMany('App\Models\Conductor', 'empresa_afiliada_id');
+    }
+
+
     //Cascade delete users associated with employees of an affiliated company when that affiliated company is deleted.
     protected static function boot()
     {
         parent::boot();
+
+        static::deleting(function ($affiliatedCompany) {
+            foreach ($affiliatedCompany->conductors as $conductor) {
+                $conductor->user()->delete();
+            }
+        });
 
         static::deleting(function ($affiliatedCompany) {
             foreach ($affiliatedCompany->employees as $employee) {

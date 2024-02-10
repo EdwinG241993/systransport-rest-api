@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AffiliatedCompanyController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ConductorController;
 
 //Define the route group using Route::group - Unauthorized 
 
@@ -23,6 +24,10 @@ Route::get('funcionarios/{id}', [EmployeeController::class, 'show']);
 //Routes client - Unauthorized
 Route::get('clientes', [ClientController::class, 'index']);
 Route::get('clientes/{id}', [ClientController::class, 'show']);
+
+//Routes conductor - Unauthorized
+Route::get('conductores', [ConductorController::class, 'index']);
+Route::get('conductores/{id}', [ConductorController::class, 'show']);
 Route::group(['middleware' => ['jwt.verify']], function () {
     //All of this requires user verification
 
@@ -45,4 +50,9 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::post('clientes', [ClientController::class, 'store']);
     Route::patch('clientes/{id}', [ClientController::class, 'update']);
     Route::delete('clientes/{id}', [ClientController::class, 'destroy']);
+
+    //Routes conductor - User Verification
+    Route::post('conductores', [ConductorController::class, 'store']);
+    Route::patch('conductores/{id}', [ConductorController::class, 'update']);
+    Route::delete('conductores/{id}', [ConductorController::class, 'destroy']);
 });
