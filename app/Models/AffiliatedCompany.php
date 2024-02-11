@@ -42,6 +42,14 @@ class AffiliatedCompany extends Model
         return $this->hasMany('App\Models\Conductor', 'empresa_afiliada_id');
     }
 
+    /**
+     * Get the cars records associated with the affiliated company.
+     */
+    public function cars()
+    {
+        return $this->hasMany('App\Models\Employee');
+    }
+
 
     //Cascade delete users associated with employees of an affiliated company when that affiliated company is deleted.
     protected static function boot()
