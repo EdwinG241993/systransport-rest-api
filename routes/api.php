@@ -6,6 +6,7 @@ use App\Http\Controllers\AffiliatedCompanyController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ConductorController;
+use App\Http\Controllers\CarController;
 
 //Define the route group using Route::group - Unauthorized 
 
@@ -28,6 +29,10 @@ Route::get('clientes/{id}', [ClientController::class, 'show']);
 //Routes conductor - Unauthorized
 Route::get('conductores', [ConductorController::class, 'index']);
 Route::get('conductores/{id}', [ConductorController::class, 'show']);
+
+//Routes car - Unauthorized
+Route::get('vehiculos', [CarController::class, 'index']);
+Route::get('vehiculos/{id}', [CarController::class, 'show']);
 Route::group(['middleware' => ['jwt.verify']], function () {
     //All of this requires user verification
 
@@ -55,4 +60,9 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::post('conductores', [ConductorController::class, 'store']);
     Route::patch('conductores/{id}', [ConductorController::class, 'update']);
     Route::delete('conductores/{id}', [ConductorController::class, 'destroy']);
+
+    //Routes car - User Verification
+    Route::post('vehiculos', [CarController::class, 'store']);
+    Route::patch('vehiculos/{id}', [CarController::class, 'update']);
+    Route::delete('vehiculos/{id}', [CarController::class, 'destroy']);
 });
