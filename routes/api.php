@@ -7,6 +7,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ConductorController;
 use App\Http\Controllers\CarController;
+use App\Http\Controllers\TicketsController;
 
 //Define the route group using Route::group - Unauthorized 
 
@@ -33,6 +34,10 @@ Route::get('conductores/{id}', [ConductorController::class, 'show']);
 //Routes car - Unauthorized
 Route::get('vehiculos', [CarController::class, 'index']);
 Route::get('vehiculos/{id}', [CarController::class, 'show']);
+
+//Routes ticket - Unauthorized
+Route::get('tiquetes', [TicketsController::class, 'index']);
+Route::get('tiquetes/{id}', [TicketsController::class, 'show']);
 Route::group(['middleware' => ['jwt.verify']], function () {
     //All of this requires user verification
 
@@ -65,4 +70,9 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::post('vehiculos', [CarController::class, 'store']);
     Route::patch('vehiculos/{id}', [CarController::class, 'update']);
     Route::delete('vehiculos/{id}', [CarController::class, 'destroy']);
+
+    //Routes ticket - User Verification
+    Route::post('tiquetes', [TicketsController::class, 'store']);
+    Route::patch('tiquetes/{id}', [TicketsController::class, 'update']);
+    Route::delete('tiquetes/{id}', [TicketsController::class, 'destroy']);
 });
