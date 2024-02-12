@@ -29,4 +29,9 @@ class Ticket extends Model
     {
         return $this->belongsTo(Car::class);
     }
+
+    public function route()
+    {
+        return $this->belongsTo(Route::class);
+    }
 }
