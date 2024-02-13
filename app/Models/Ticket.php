@@ -32,6 +32,6 @@ class Ticket extends Model
 
     public function route()
     {
-        return $this->belongsTo(Route::class);
+        return $this->belongsTo(Route::class, 'conductor_id');
     }
 }
