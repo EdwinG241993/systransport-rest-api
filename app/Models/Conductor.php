@@ -26,4 +26,9 @@ class Conductor extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function turn()
+    {
+        return $this->hasMany(Turn::class);
+    }
 }

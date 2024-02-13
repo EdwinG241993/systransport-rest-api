@@ -9,6 +9,7 @@ use App\Http\Controllers\ConductorController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\TicketsController;
 use App\Http\Controllers\RouteController;
+use App\Http\Controllers\TurnController;
 
 //Define the route group using Route::group - Unauthorized 
 
@@ -43,6 +44,10 @@ Route::get('tiquetes/{id}', [TicketsController::class, 'show']);
 //Routes routes - Unauthorized
 Route::get('rutas', [RouteController::class, 'index']);
 Route::get('rutas/{id}', [RouteController::class, 'show']);
+
+//Routes turns - Unauthorized
+Route::get('turnos', [TurnController::class, 'index']);
+Route::get('turnos/{id}', [TurnController::class, 'show']);
 Route::group(['middleware' => ['jwt.verify']], function () {
     //All of this requires user verification
 
@@ -85,4 +90,9 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::post('rutas', [RouteController::class, 'store']);
     Route::patch('rutas/{id}', [RouteController::class, 'update']);
     Route::delete('rutas/{id}', [RouteController::class, 'destroy']);
+
+    //Routes turns - User Verification
+    Route::post('turnos', [TurnController::class, 'store']);
+    Route::patch('turnos/{id}', [TurnController::class, 'update']);
+    Route::delete('turnos/{id}', [TurnController::class, 'destroy']);
 });
