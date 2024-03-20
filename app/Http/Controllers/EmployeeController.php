@@ -55,9 +55,13 @@ class EmployeeController extends Controller
             'empresa_afiliada_id' => 'required|integer'
         ]);
 
-        //If validation fails
+        //Return an error if validations fail
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 400);
+            $errors = [];
+            foreach ($validator->messages()->toArray() as $field => $messages) {
+                $errors[$field] = $messages[0];
+            }
+            return response()->json(['employee_errors' => $errors], 400);
         }
 
         //Create the affiliated employee in the DB

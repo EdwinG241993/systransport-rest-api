@@ -31,6 +31,8 @@ Route::group(['middleware' => ['jwt.verify']], function () {
 Route::group(['middleware' => ['jwt.verify', 'role:Administrador']], function () {
     //All of this requires user verification and role administrator
 
+    Route::post('/get-user-by-email', [AuthController::class, 'getUserByEmail']);
+
     //Routes affiliated company - User Verification
     Route::get('empresas-afiliadas', [AffiliatedCompanyController::class, 'index']);
     Route::get('empresas-afiliadas/{id}', [AffiliatedCompanyController::class, 'show']);

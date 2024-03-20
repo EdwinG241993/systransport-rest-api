@@ -37,7 +37,11 @@ class AuthController extends Controller
 
         //Return an error if validations fail
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 400);
+            $errors = [];
+            foreach ($validator->messages()->toArray() as $field => $messages) {
+                $errors[$field] = $messages[0];
+            }
+            return response()->json(['errors' => $errors], 400);
         }
 
         //Create new user
@@ -75,7 +79,12 @@ class AuthController extends Controller
 
         //Return an error if validations fail
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 400);
+            $errors = [];
+            foreach ($validator->messages()->toArray() as $field => $messages) {
+                $errors[$field] = $messages[0];
+            }
+            return response()->json(['errors' => $errors], 400);
+            //return response()->json(['error' => $validator->messages()], 400);
         }
 
         //Log in
@@ -83,7 +92,7 @@ class AuthController extends Controller
             if (!$token = JWTAuth::attempt($credentials)) {
                 //Incorrect credentials.
                 return response()->json([
-                    'mensaje' => 'Error de inicio de sesión',
+                    'message' => 'Credenciales Incorrectas',
                 ], 401);
             }
         } catch (JWTException $e) {
@@ -95,6 +104,7 @@ class AuthController extends Controller
 
         //Return token
         return response()->json([
+            'message' => "Inicio de sesion correcto",
             'token' => $token,
             'user' => Auth::user()
         ]);
@@ -162,5 +172,50 @@ class AuthController extends Controller
         return response()->json([
             'mensaje' => 'EL usuario fue eliminado con exito'
         ], Response::HTTP_OK);
+    }
+
+    //Function to get user by email
+    public function getUserByEmail(Request $request)
+    {
+        //Validate token in the header
+        $token = $request->bearerToken();
+        if (!$token) {
+            return response()->json([
+                'message' => 'Token not provided',
+            ], 401);
+        }
+
+        try {
+            //Verify authentication
+            $user = JWTAuth::setToken($token)->toUser();
+            //If there is no user or the user is not an admin
+            if (!$user || $user->privilegio !== 1) {
+                return response()->json([
+                    'message' => 'Unauthorized',
+                ], 401);
+            }
+        } catch (JWTException $e) {
+            return response()->json([
+                'message' => 'Invalid token',
+            ], 401);
+        }
+
+        //Validate email in the request
+        $this->validate($request, [
+            'email' => 'required|email'
+        ]);
+
+        //Search for user by email
+        $userByEmail = User::where('email', $request->email)->first();
+
+        //If user with the given email not found
+        if (!$userByEmail) {
+            return response()->json([
+                'message' => 'User not found',
+            ], 404);
+        }
+
+        //Return user data if user exists 
+        return response()->json(['userId' => $userByEmail->id]);
     }
 }
